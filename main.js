@@ -159,59 +159,64 @@ for (var dayObj in days) {
 }
 
 classes.forEach(function (className) {
-	injectStyles('#container div span.' + className + ' { background-color: ' + randomColor() + '; }');	
+	injectStyles('#container div span.' + className + ' { background-color: ' + randomColor() + '; }');
+	$('#container div span.' + className).hover(
+       function(){ $('#container div span.' + className).addClass('hover'); },
+       function(){ $('#container div span.' + className).removeClass('hover'); }
+	);
 });
 
+
+var dayTds = $('#calendar').find('td');
+
+// Ported from
 // http://www.skylighters.org/special/chrono/perpetual.html
-
 // Script Copyright (c) 1998 by Ricky Duval
-// You may copy this script, but ONLY if it remains INTACT
-// including this message.  Thank you!!
+function generateCalendar(month, year) {
 
-function PrintCalendar(form) {
+	var numDays = 31;
 
-    for (i=1;i<=42;i++)
-        {self.document.Calendar.elements[i].value="";}
+	if ( (month === 3) || (month === 5) || (month === 8) || (month === 10)) {
+		numDays = 30;
+	}
+	if ((month === 1)) {
+		numDays = 28;
+		if (((year % 4) === 0) && ((year % 100) !== 0)) {
+			numDays = 29;
+		}
+        if ((year % 400) === 0) {
+        	numDays = 29;
+		}
+	}
 
-    Month = form.elements[0].selectedIndex;
-    Year  = form.elements[1].value;
-
-    if (Month === 0)  MonthName = "January";
-    if (Month === 1)  MonthName = "February";
-    if (Month === 2)  MonthName = "March";
-    if (Month === 3)  MonthName = "April";
-    if (Month === 4)  MonthName = "May";
-    if (Month === 5)  MonthName = "June";
-    if (Month === 6)  MonthName = "July";
-    if (Month === 7)  MonthName = "August";
-    if (Month === 8)  MonthName = "September";
-    if (Month === 9)  MonthName = "October";
-    if (Month === 10) MonthName = "November";
-    if (Month === 11) MonthName = "December";
-
-    Text = MonthName+", "+Year;
-    l = Text.length;
-    for (i=1;i<(16-l)/2;i++) 
-        {Text = " "+Text;}
-    self.document.Calendar.elements[0].value=Text;
-
-    NumDays=31;
-    if ((Month==3)||(Month==5)||(Month==8)||(Month==10))
-        {NumDays=30;}
-    if ((Month==1)) {
-        NumDays=28;
-        if((Year%4===0)&&(Year%100!==0)) {NumDays=29;}
-        if(Year%400===0) {NumDays=29;}
-        }
-
-    TempDate = new Date(Year, Month, 1);
-    FirstDay = TempDate.getDay();
-    i = FirstDay + 1;
-    for(c=1;c<=NumDays;c++) {
-        self.document.Calendar.elements[i].value=c;
-        i++;
+    var firstDay = new Date(year, month, 1).getDay();
+    var j = firstDay;
+    for(var i = 1; i <= numDays; i++) {
+        $('<span>', {
+			text: i
+		}).appendTo(dayTds[j]);
+        j++;
     }
-
 }
+
+function resetCalendar () {
+	$.each(dayTds, function (ind, val) {
+		$(val).empty();
+	});
+}
+
+function init() {
+	$('#genCalBtn').click(function () {
+		resetCalendar();
+		generateCalendar(parseInt($('#monthSelect').val(), 10), parseInt($('#yearFld').val(), 10));
+	});
+	$('#calGenForm').submit(function (evt) {
+		evt.preventDefault();
+		resetCalendar();
+		generateCalendar(parseInt($('#monthSelect').val(), 10), parseInt($('#yearFld').val(), 10));
+	});
+}
+
+$(document).ready(init);
 
 }());

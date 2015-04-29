@@ -5,6 +5,9 @@
 		body {
 			font-family: sans-serif;
 		}
+		#yearFld {
+			width: 50px;
+		}
 		#container div {
 			float: left;
 			width: 135px;
@@ -15,10 +18,90 @@
 			display: block;
 			width: 100%;
 		}
+		.hover {
+			opacity: 0.85;
+		}
 	</style>
 </head>
 <body>
 	<h1>How Much Work?</h1>
+
+	<form id="calGenForm" action="">
+		<select id="monthSelect">
+			<option value="0">January</option>
+			<option value="1">February</option>
+			<option value="2">March</option>
+			<option value="3">April</option>
+			<option value="4">May</option>
+			<option value="5">June</option>
+			<option value="6">July</option>
+			<option value="7">August</option>
+			<option value="8">September</option>
+			<option value="9">October</option>
+			<option value="10">November</option>
+			<option value="11">December</option>
+		</select>
+		<input type="text" id="yearFld" maxlength="4" value="2015" placeholder="2015">
+		<input type="submit" id="genCalBtn" value="Generate Calendar">
+	</form>
+
+	<table id="calendar">
+	<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	</table>
 
 	<div id="container"></div>
 
