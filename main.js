@@ -45,24 +45,6 @@ var expenses = {
 	donuts: 12,
 	other: 123
 };
-var expensePercentages = {};
-var expensesInDays = {};
-var days = {};
-
-for (var expense in expenses) {
-    expensePercentages[expense] = expenses[expense] / amountMade;
-}
-
-for (var percent in expensePercentages) {
-    expensesInDays[percent] = periodLength * expensePercentages[percent];
-}
-
-for (var i = 1; i <= periodLength; i++) {
-    days[i] = {};
-}
-
-// "expensesInDaysClone"
-var eidc = $.extend(true, {}, expensesInDays);
 
 // https://css-tricks.com/snippets/javascript/inject-new-css-rules/
 function injectStyles(rule) {
@@ -80,92 +62,151 @@ function sumOfProps (o) {
 	return sum;
 }
 
-for (var day in days) {
-	var n = 0;
-	while (sumOfProps(days[day]) < 1) {
-		var firstProp = Object.keys(eidc)[0];
-		var secondProp = Object.keys(eidc)[1];
-
-		// safeguard against having a runaway while loop during debugging
-		n++;
-		if (n > 1000) {
-			console.warn('we had a problem');
-			break;
-		}
-
-		if (Object.keys(eidc).length === 0) {
-			console.log('we reached the end');
-			break;
-		}
-
-		var diff = null;
-
-		if (eidc[firstProp] < 1) {
-			if ((sumOfProps(days[day]) + eidc[firstProp]) >= 1) {
-				diff = 1 - sumOfProps(days[day]);
-				eidc[firstProp] = eidc[firstProp] - diff;
-				days[day][firstProp] = diff;
-				delete eidc[firstProp];
-			} else if ((sumOfProps(days[day]) + eidc[secondProp]) >= 1) {
-				days[day][firstProp] = eidc[firstProp];
-				diff = 1 - sumOfProps(days[day]);
-				eidc[secondProp] = eidc[secondProp] - diff;
-				days[day][secondProp] = diff;
-				delete eidc[firstProp];
-			} else {
-				days[day][firstProp] = eidc[firstProp];
-				delete eidc[firstProp];
-			}			
-		}
-
-		if (eidc[firstProp] === 1) {
-			days[day][firstProp] = 1;
-			delete eidc[firstProp];	
-		}
-
-		if (eidc[firstProp] > 1) {
-			days[day][firstProp] = 1;
-			eidc[firstProp]--;	
-		}
-	}
+// Apparently, the javascript Date function allows you to overflow the day 
+// number parameter that you pass, creating a date in the next month. 
+// Deliberately overflowing the day parameter and checking how far the 
+// resulting date overlaps into the next month is a quick way to tell how many
+// days there were in the queried month.
+// -- http://www.dzone.com/snippets/determining-number-days-month
+// http://stackoverflow.com/q/7827838/2486583
+function daysInMonth(month, year) {
+	return 32 - new Date(year, month, 32).getDate();
 }
 
-for (var o in days) {
-	console.log(days[o]);
+// Javascript has a little quirk where a date of zero will set the date to be 
+// the last day of the previous month. Likewise is there are 30 days in a 
+// month and you set a date of 31 it will be the 1st day of the next month, a 
+// date of 40 would be the 10th day of the next month.
+// -- http://www.hunlock.com/blogs/Javascript_Dates-The_Complete_Reference
+// function daysInMonth(month, year) {
+// 	return new Date(year, month, 0).getDate();
+// }
+
+function isWeekday(year, month, day) {
+	var d = new Date(year, month, day).getDay();
+	return (d !== 0) && (d !== 6);
 }
 
-console.log('the end');
-
-var classes = [];
-var s = 0;
-
-for (var dayObj in days) {
-	
-	$('<div>', {
-		id: 'day' + s,
-	}).appendTo('#calContainer');
-
-	for (var prop in days[dayObj]) {
-		$('<span>', {
-			class: prop,
-			style: 'height:' + (days[dayObj][prop] * 100) + '%;',
-			text: prop
-		}).appendTo('#day' + s);
+function weekdaysInMonth(month, year) {
+	var days = daysInMonth(month, year);
+	var weekdays = 0;
+	for (var i = 0; i < days; i++) {
+    	if (isWeekday(year, month, i+1)) {
+    		weekdays++;
+    	}
 	}
-	if (classes.indexOf(prop) === -1) {
-		classes.push(prop);
-	}
-	s++;
+	return weekdays;
 }
 
-classes.forEach(function (className) {
-	injectStyles('#calContainer div span.' + className + ' { background-color: ' + randomColor() + '; }');
-	$('#calContainer div span.' + className).hover(
-       function(){ $('#calContainer div span.' + className).addClass('hover'); },
-       function(){ $('#calContainer div span.' + className).removeClass('hover'); }
-	);
-});
+function genExpensesInDays (periodLength /* Int */, amountMade /* Int */, expenses /* Obj */) {
+	var expensePercentages = {};
+	var expensesInDays = {};
+	var days = {};
 
+	for (var expense in expenses) {
+		expensePercentages[expense] = expenses[expense] / amountMade;
+	}
+
+	for (var percent in expensePercentages) {
+		expensesInDays[percent] = periodLength * expensePercentages[percent];
+	}
+
+	for (var i = 1; i <= periodLength; i++) {
+		days[i] = {};
+	}
+
+	// "expensesInDaysClone"
+	var eidc = $.extend(true, {}, expensesInDays);
+
+	for (var day in days) {
+		var n = 0;
+		while (sumOfProps(days[day]) < 1) {
+			var firstProp = Object.keys(eidc)[0];
+			var secondProp = Object.keys(eidc)[1];
+
+			// safeguard against having a runaway while loop during debugging
+			n++;
+			if (n > 1000) {
+				console.warn('we had a problem');
+				break;
+			}
+
+			if (Object.keys(eidc).length === 0) {
+				console.log('we reached the end');
+				break;
+			}
+
+			var diff = null;
+
+			if (eidc[firstProp] < 1) {
+				if ((sumOfProps(days[day]) + eidc[firstProp]) >= 1) {
+					diff = 1 - sumOfProps(days[day]);
+					eidc[firstProp] = eidc[firstProp] - diff;
+					days[day][firstProp] = diff;
+					delete eidc[firstProp];
+				} else if ((sumOfProps(days[day]) + eidc[secondProp]) >= 1) {
+					days[day][firstProp] = eidc[firstProp];
+					diff = 1 - sumOfProps(days[day]);
+					eidc[secondProp] = eidc[secondProp] - diff;
+					days[day][secondProp] = diff;
+					delete eidc[firstProp];
+				} else {
+					days[day][firstProp] = eidc[firstProp];
+					delete eidc[firstProp];
+				}			
+			}
+
+			if (eidc[firstProp] === 1) {
+				days[day][firstProp] = 1;
+				delete eidc[firstProp];	
+			}
+
+			if (eidc[firstProp] > 1) {
+				days[day][firstProp] = 1;
+				eidc[firstProp]--;	
+			}
+		}
+	}
+
+	// for (var o in days) {
+	// 	console.log(days[o]);
+	// }
+
+	return days;
+}
+
+function vizExpenses (expensesPerDayObj) {
+	var classes = [];
+	var s = 0;
+	var toFills = $('#calendar').find('td.toFill');
+	for (var dayObj in expensesPerDayObj) {
+		
+		$('<div>', {
+			id: 'day' + s,
+		}).appendTo(toFills[dayObj - 1]); // finally a situation to take advantage of the damned coercion
+
+		for (var prop in expensesPerDayObj[dayObj]) {
+			$('<span>', {
+				class: prop,
+				style: 'height:' + (expensesPerDayObj[dayObj][prop] * 100) + '%;',
+				text: prop
+			}).appendTo('#day' + s);
+		}
+		if (classes.indexOf(prop) === -1) {
+			classes.push(prop);
+		}
+		s++;
+	}
+
+	classes.forEach(function (className) {
+		injectStyles('#calendar td > div > span.' + className + ' { background-color: ' + randomColor() + '; }');
+		$('#calendar td > div > span.' + className).hover(
+			function(){ $('#calendar td > div > span.' + className).addClass('hover'); },
+			function(){ $('#calendar td > div > span.' + className).removeClass('hover'); }
+		);
+	});
+
+}
 
 var dayTds = $('#calendar').find('td');
 
@@ -176,7 +217,7 @@ function generateCalendar(month, year) {
 
 	var numDays = 31;
 
-	if ( (month === 3) || (month === 5) || (month === 8) || (month === 10)) {
+	if ((month === 3) || (month === 5) || (month === 8) || (month === 10)) {
 		numDays = 30;
 	}
 	if ((month === 1)) {
@@ -195,6 +236,9 @@ function generateCalendar(month, year) {
         $('<span>', {
 			text: i
 		}).appendTo(dayTds[j]);
+		if (isWeekday(year, month, i)) {
+			$(dayTds[j]).addClass('toFill');
+		}
         j++;
     }
 }
@@ -202,18 +246,21 @@ function generateCalendar(month, year) {
 function resetCalendar () {
 	$.each(dayTds, function (ind, val) {
 		$(val).empty();
+		$(val).removeClass('toFill');
 	});
 }
 
 function init() {
-	$('#genCalBtn').click(function () {
-		resetCalendar();
-		generateCalendar(parseInt($('#monthSelect').val(), 10), parseInt($('#yearFld').val(), 10));
-	});
+	// $('#genCalBtn').click(function () {
+		
+	// });
 	$('#calGenForm').submit(function (evt) {
+		var mInt = parseInt($('#monthSelect').val(), 10);
+		var yInt = parseInt($('#yearFld').val(), 10);
 		evt.preventDefault();
 		resetCalendar();
-		generateCalendar(parseInt($('#monthSelect').val(), 10), parseInt($('#yearFld').val(), 10));
+		generateCalendar(mInt, yInt);
+		vizExpenses(genExpensesInDays(weekdaysInMonth(mInt, yInt), amountMade, expenses));
 	});
 }
 

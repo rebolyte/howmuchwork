@@ -14,18 +14,29 @@
     <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
 
     <style type="text/css">
-		#formWrapper {
-			width: 25%;
-		}
-		#calContainer div {
+		.formWrapper {
+			width: 35%;
 			float: left;
-			width: 135px;
-			height: 135px;
+			margin: 10px 20px;
+		}
+		table#calendar td > div {
+			/*float: left;*/
+			width: 100%;
+			height: 100%;
 			background-color: #ddd;
 		}
-		#calContainer div span {
+		table#calendar td > div > span {
 			display: block;
 			width: 100%;
+		}
+		table#calendar td {
+			width: 100px;
+			height: 100px;
+			vertical-align: top;
+			border: 1px solid #ccc;
+		}
+		table#calendar td > span {
+			float: right;
 		}
 		.hover {
 			opacity: 0.85;
@@ -74,26 +85,92 @@
 		
 		<h1 style="margin-top: 100px;">How Much Work?</h1>
 
-	<div id="formWrapper">
-		<form id="calGenForm" action="">
-			<select id="monthSelect" class="form-control">
-				<option value="0">January</option>
-				<option value="1">February</option>
-				<option value="2">March</option>
-				<option value="3">April</option>
-				<option value="4">May</option>
-				<option value="5">June</option>
-				<option value="6">July</option>
-				<option value="7">August</option>
-				<option value="8">September</option>
-				<option value="9">October</option>
-				<option value="10">November</option>
-				<option value="11">December</option>
-			</select>
-			<input type="text" class="form-control" id="yearFld" maxlength="4" value="2015" placeholder="2015">
-			<input type="submit" class="btn btn-default" id="genCalBtn" value="Generate Calendar">
+	<p>If you are paid bi-weekly, enter the sum of two paychecks (one month of pay).</p>
+
+	<div class="formWrapper">
+		<form id="calGenForm" class="form-horizontal" action="">
+		<fieldset>
+			<legend>Enter Info/Income</legend>
+			<div class="form-group">
+				<label for="monthSelect" class="col-lg-2 control-label">Month</label>
+				<div class="col-lg-10">
+					<select id="monthSelect" class="form-control">
+						<option value="0">January</option>
+						<option value="1">February</option>
+						<option value="2">March</option>
+						<option value="3">April</option>
+						<option value="4">May</option>
+						<option value="5">June</option>
+						<option value="6">July</option>
+						<option value="7">August</option>
+						<option value="8">September</option>
+						<option value="9">October</option>
+						<option value="10">November</option>
+						<option value="11">December</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="yearFld" class="col-lg-2 control-label">Year</label>
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="yearFld" maxlength="4" value="2015" placeholder="2015">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="periodRadio" class="col-lg-2 control-label">Period</label>
+				<div class="col-lg-10">
+					<div class="radio">
+						<label>
+							<input type="radio" name="periodRadios" id="periodRadios1" value="option1" checked="">
+							Monday-Friday
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="periodRadios" id="periodRadios2" value="option12" checked="">
+							Monday-Saturday
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="amountMadeFld" class="col-lg-2 control-label">Total Income</label>
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="amountMadeFld" placeholder="2500">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-10 col-lg-offset-2">
+					<button type="reset" class="btn btn-default">Cancel</button>
+					<button type="submit" class="btn btn-primary" id="genCalBtn">Visualize</button>
+				</div>
+			</div>
+		</fieldset>
+		</form>	
+	</div>
+
+	<div class="formWrapper">
+		<!-- expense form -->
+		<form id="expenseForm" action="">
+		<fieldset>
+			<legend>Enter Expenses</legend>
+			<div class="form-group">
+				<label class="control-label" for="expenseCategoryFld">Expense</label>
+				<div class="input-group">
+					<span class="input-group-addon">Category</span>
+					<input type="text" class="form-control" id="expenseCategoryFld" placeholder="Groceries">
+					<span class="input-group-addon">$</span>
+					<input type="text" class="form-control" id="expenseAmountFld" placeholder="500">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">Add</button>
+					</span>
+				</div>
+			</div>
+		</fieldset>
 		</form>
 	</div>
+
+	<hr style="clear: left">
 
 	<table id="calendar">
 	<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
@@ -157,7 +234,7 @@
 	</div>
 
 	<hr>
-	
+
 	<footer>
             <div class="row">
                 <div class="col-lg-12">
