@@ -143,7 +143,7 @@ for (var dayObj in days) {
 	
 	$('<div>', {
 		id: 'day' + s,
-	}).appendTo('#container');
+	}).appendTo('#calContainer');
 
 	for (var prop in days[dayObj]) {
 		$('<span>', {
@@ -159,10 +159,10 @@ for (var dayObj in days) {
 }
 
 classes.forEach(function (className) {
-	injectStyles('#container div span.' + className + ' { background-color: ' + randomColor() + '; }');
-	$('#container div span.' + className).hover(
-       function(){ $('#container div span.' + className).addClass('hover'); },
-       function(){ $('#container div span.' + className).removeClass('hover'); }
+	injectStyles('#calContainer div span.' + className + ' { background-color: ' + randomColor() + '; }');
+	$('#calContainer div span.' + className).hover(
+       function(){ $('#calContainer div span.' + className).addClass('hover'); },
+       function(){ $('#calContainer div span.' + className).removeClass('hover'); }
 	);
 });
 
