@@ -19,6 +19,9 @@
 			float: left;
 			margin: 10px 20px;
 		}
+		#expenseFormWrapper {
+			width: 45%;
+		}
 		table#calendar td > div {
 			/*float: left;*/
 			width: 100%;
@@ -28,6 +31,7 @@
 		table#calendar td > div > span {
 			display: block;
 			width: 100%;
+			color: white;
 		}
 		table#calendar td {
 			width: 100px;
@@ -37,6 +41,7 @@
 		}
 		table#calendar td > span {
 			float: right;
+			color: #656565;
 		}
 		.hover {
 			opacity: 0.85;
@@ -141,7 +146,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-lg-10 col-lg-offset-2">
-					<button type="reset" class="btn btn-default">Cancel</button>
+					<button type="reset" class="btn btn-default">Reset</button>
 					<button type="submit" class="btn btn-primary" id="genCalBtn">Visualize</button>
 				</div>
 			</div>
@@ -149,20 +154,20 @@
 		</form>	
 	</div>
 
-	<div class="formWrapper">
+	<div class="formWrapper" id="expenseFormWrapper">
 		<!-- expense form -->
 		<form id="expenseForm" action="">
-		<fieldset>
+		<fieldset id="expenses">
 			<legend>Enter Expenses</legend>
 			<div class="form-group">
 				<label class="control-label" for="expenseCategoryFld">Expense</label>
-				<div class="input-group">
+				<div class="input-group" id="firstExpenseGroup">
 					<span class="input-group-addon">Category</span>
-					<input type="text" class="form-control" id="expenseCategoryFld" placeholder="Groceries">
+					<input type="text" class="form-control expenseCategoryFld" placeholder="Groceries">
 					<span class="input-group-addon">$</span>
-					<input type="text" class="form-control" id="expenseAmountFld" placeholder="500">
+					<input type="text" class="form-control expenseAmountFld" placeholder="500">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Add</button>
+						<button class="btn btn-default expenseAddBtn" type="button">Add</button>
 					</span>
 				</div>
 			</div>

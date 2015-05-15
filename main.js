@@ -49,6 +49,7 @@ var expenses = {
 // https://css-tricks.com/snippets/javascript/inject-new-css-rules/
 function injectStyles(rule) {
   var div = $('<div />', {
+  	class: 'injected',
     html: '&shy;<style>' + rule + '</style>'
   }).appendTo('body');    
 }
@@ -186,26 +187,30 @@ function vizExpenses (expensesPerDayObj) {
 		}).appendTo(toFills[dayObj - 1]); // finally a situation to take advantage of the damned coercion
 
 		for (var prop in expensesPerDayObj[dayObj]) {
+			var sizeStyle = expensesPerDayObj[dayObj][prop] < 0.2 ? ' font-size: 8pt;' : '';
+
 			$('<span>', {
 				class: prop,
-				style: 'height:' + (expensesPerDayObj[dayObj][prop] * 100) + '%;',
+				style: 'height:' + expensesPerDayObj[dayObj][prop] * 100 + '%;' + sizeStyle,
 				text: prop
 			}).appendTo('#day' + s);
-		}
-		if (classes.indexOf(prop) === -1) {
-			classes.push(prop);
+
+			if (classes.indexOf(prop) === -1) {
+				classes.push(prop);
+			}
 		}
 		s++;
 	}
 
+	var colors = randomColor({hue: 'green', luminosity: 'dark', count: classes.length});
+
 	classes.forEach(function (className) {
-		injectStyles('#calendar td > div > span.' + className + ' { background-color: ' + randomColor() + '; }');
+		injectStyles('#calendar td > div > span.' + className + ' { background-color: ' + colors.shift() + '; }');
 		$('#calendar td > div > span.' + className).hover(
-			function(){ $('#calendar td > div > span.' + className).addClass('hover'); },
-			function(){ $('#calendar td > div > span.' + className).removeClass('hover'); }
+			function () { $('#calendar td > div > span.' + className).addClass('hover'); },
+			function () { $('#calendar td > div > span.' + className).removeClass('hover'); }
 		);
 	});
-
 }
 
 var dayTds = $('#calendar').find('td');
@@ -248,19 +253,38 @@ function resetCalendar () {
 		$(val).empty();
 		$(val).removeClass('toFill');
 	});
+	$.each($('body').find('.injected'), function (ind, val) {
+		$(val).remove();
+	});
 }
 
 function init() {
 	// $('#genCalBtn').click(function () {
 		
 	// });
-	$('#calGenForm').submit(function (evt) {
+	$('#calGenForm').on('submit', function (evt) {
 		var mInt = parseInt($('#monthSelect').val(), 10);
 		var yInt = parseInt($('#yearFld').val(), 10);
+		var amountMade = parseInt($('#amountMadeFld').val(), 10);
+		var expenses = {};
+		
+		$.each($('#expenses').find('.input-group'), function (ind, val) {
+			var cat = $(val).find('input.expenseCategoryFld').val();
+			var amnt = parseInt($(val).find('input.expenseAmountFld').val(), 10);
+			expenses[cat] = amnt;
+		});
+
 		evt.preventDefault();
 		resetCalendar();
 		generateCalendar(mInt, yInt);
 		vizExpenses(genExpensesInDays(weekdaysInMonth(mInt, yInt), amountMade, expenses));
+	});
+
+	$('#expenseForm').on('click', 'button.expenseAddBtn', function (evt) {
+		var group = $('#firstExpenseGroup').clone().appendTo('#expenses');
+		$.each($(group).find('input'), function (ind, val) {
+			$(val).val('');
+		});
 	});
 }
 
