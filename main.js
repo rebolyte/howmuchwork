@@ -187,16 +187,17 @@ function vizExpenses (expensesPerDayObj) {
 		}).appendTo(toFills[dayObj - 1]); // finally a situation to take advantage of the damned coercion
 
 		for (var prop in expensesPerDayObj[dayObj]) {
+			var propDataName = prop.replace(/\s+/g, '-').toLowerCase();
 			var sizeStyle = expensesPerDayObj[dayObj][prop] < 0.2 ? ' font-size: 8pt;' : '';
 
 			$('<span>', {
-				class: prop,
+				class: propDataName,
 				style: 'height:' + expensesPerDayObj[dayObj][prop] * 100 + '%;' + sizeStyle,
 				text: prop
 			}).appendTo('#day' + s);
 
-			if (classes.indexOf(prop) === -1) {
-				classes.push(prop);
+			if (classes.indexOf(propDataName) === -1) {
+				classes.push(propDataName);
 			}
 		}
 		s++;
