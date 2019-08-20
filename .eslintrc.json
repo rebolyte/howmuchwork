@@ -1,0 +1,85 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+	"plugins": ["@typescript-eslint", "react", "react-hooks", "prettier"],
+	"env": {
+		"browser": true
+	},
+	"extends": [
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/typescript",
+		"plugin:react/recommended",
+		"plugin:prettier/recommended",
+		"prettier/@typescript-eslint"
+	],
+	"settings": {
+		"react": {
+			"pragma": "React",
+			"version": "detect"
+		}
+	},
+	"rules": {
+		"prettier/prettier": [
+			"error",
+			{
+				"singleQuote": true,
+				"semi": true
+			}
+		],
+		"indent": [
+			1,
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"quotes": [1, "single"],
+		"eqeqeq": [2, "always"],
+		"strict": 1,
+		"no-unused-vars": "off",
+		"semi": [2, "always"],
+		"no-implicit-globals": 2,
+		"curly": 2,
+		"guard-for-in": 1,
+		"default-case": 1,
+		"dot-location": [2, "property"],
+		"new-cap": 1,
+		"no-trailing-spaces": 1,
+		"eol-last": 1,
+		"block-spacing": [1, "always"],
+		"array-bracket-spacing": [1, "never"],
+		"camelcase": 1,
+		"space-before-function-paren": [
+			1,
+			{
+				"anonymous": "always",
+				"named": "never"
+			}
+		],
+		"no-spaced-func": 2,
+		"one-var-declaration-per-line": [1, "always"],
+		"object-curly-spacing": [1, "always"],
+		"space-in-parens": [1, "never"],
+		"space-infix-ops": 1,
+		"spaced-comment": [1, "always"],
+		"no-console": 0,
+		"no-debugger": "error",
+		"no-var": "error",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/explicit-member-accessibility": "off",
+		"@typescript-eslint/no-var-requires": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{ "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
+		],
+		"@typescript-eslint/no-parameter-properties": "off",
+		"@typescript-eslint/camelcase": "off",
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn"
+	}
+}

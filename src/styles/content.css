@@ -1,0 +1,188 @@
+/**
+ * CONTENT
+ *
+ * Styling for things inside .content, which will be rendered from Markdown, so we have to target
+ * generic elements.
+ */
+
+/* purgecss start ignore */
+
+.content {
+	letter-spacing: 0.02em;
+	line-height: 1.5;
+
+	p:not(:last-child) {
+		margin-bottom: 1rem;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 1rem 0 0.5rem 0;
+	}
+
+	h1 {
+		@apply .text-3xl;
+	}
+
+	h2 {
+		@apply .text-2xl;
+	}
+
+	h3 {
+		@apply .text-xl;
+	}
+
+	h4 {
+		@apply .text-lg .font-semibold;
+	}
+
+	h5 {
+		@apply .text-base;
+	}
+
+	h6 {
+		@apply .text-sm;
+	}
+
+	code {
+		font-family: 'Droid Sans Mono', 'Menlo', 'Monaco', 'DejaVu Sans Mono', 'Consolas', 'Courier New',
+			monospace;
+		font-size: 0.85rem;
+		-moz-osx-font-smoothing: auto;
+		-webkit-font-smoothing: auto;
+		border-radius: 0.15rem;
+		border: 1px solid #333;
+		background: #202132;
+		padding: 0 0.15rem;
+		display: inline-block;
+		color: #ccc;
+		line-height: 1.3em;
+	}
+
+	pre {
+		max-width: 100%;
+		border: 1px solid #333;
+		background: #202132;
+		border-radius: 0.15rem;
+		padding: 0.45rem;
+		overflow-x: auto;
+		tab-size: 4;
+		margin: 0.5rem 0;
+	}
+
+	pre code {
+		border: 0;
+		background: transparent;
+		padding: none;
+	}
+
+	a {
+		color: theme('colors.blue.600');
+		text-decoration: underline;
+	}
+
+	a:hover {
+		color: theme('colors.blue.500');
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+		background-color: white;
+	}
+
+	table thead {
+		@apply font-semibold bg-gray-300;
+	}
+
+	table th,
+	table td {
+		/* border: 1px solid #999; */
+		padding: 6px 12px;
+	}
+
+	table thead th {
+		text-align: left;
+	}
+
+	table tbody tr:nth-child(2n) {
+		@apply bg-gray-100;
+	}
+
+	.stripe {
+		background-color: #d91e0f;
+		height: 8px;
+	}
+
+	blockquote {
+		font-style: italic;
+		color: theme('colors.gray.700');
+		padding-left: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	ul {
+		list-style-type: disc;
+		padding-left: theme('padding.5');
+		margin-left: theme('margin.3');
+		margin-bottom: theme('margin.4');
+		margin-top: theme('margin.4');
+
+		li {
+			padding-left: theme('padding.2');
+
+			p {
+				margin-bottom: 0;
+			}
+
+			ul {
+				list-style-type: circle;
+				margin-bottom: 0;
+				margin-top: 0;
+
+				li {
+					ul {
+						list-style-type: square;
+					}
+				}
+			}
+		}
+	}
+
+	ol {
+		list-style-type: decimal;
+		padding-left: theme('padding.5');
+		margin-left: theme('margin.3');
+		margin-bottom: theme('margin.4');
+
+		li {
+			padding-left: theme('padding.2');
+
+			p {
+				margin-bottom: 0;
+			}
+
+			ol {
+				list-style-type: lower-alpha;
+				margin-bottom: 0;
+				margin-top: 0;
+
+				li {
+					ol {
+						list-style-type: lower-roman;
+					}
+				}
+			}
+		}
+	}
+
+	img {
+		@apply m-2 shadow;
+	}
+}
+
+/* purgecss end ignore */

@@ -1,0 +1,81 @@
+/* https://github.com/tailwindcss/tailwindcss/issues/449 */
+
+/* https://github.com/tailwindcss/discuss/issues/92 */
+
+/**
+ * Tailwind's preflight which resets the browser to be ready for Tailwind's utilities
+ */
+@import 'tailwindcss/base';
+
+/**
+ * Any custom component code. This comes before Tailwind's utilities to ensure the cascade doesn't
+ * affect utilities
+ */
+
+/* BlueprintJS is imported in app.tsx */
+
+/* Base dir is defined in postcss.config.js */
+@import 'utils.css';
+@import 'iconfont.css';
+@import 'content.css';
+
+/* @import '../components/DLButton/DLButton.css'; */
+
+@import 'tailwindcss/components';
+
+/**
+ * Tailwind's utilities
+ */
+@import 'tailwindcss/utilities';
+
+.link {
+	@apply text-blue-600 cursor-pointer underline dim;
+}
+
+.form-label {
+	@apply block text-gray-700 font-bold mb-1;
+}
+
+.error-text {
+	@apply ml-2 text-red-500 text-sm italic;
+}
+
+.spin {
+	text-align: center;
+	display: block;
+	font-size: 24pt;
+	line-height: 1;
+	padding: 5px;
+	animation: spin 2s infinite linear;
+
+	/* border: 1px dotted white; */
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(359deg);
+	}
+}
+
+.refresh-spin {
+	animation-duration: 0.75s;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in-out;
+	animation-name: refresh-spin;
+}
+
+@keyframes refresh-spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}

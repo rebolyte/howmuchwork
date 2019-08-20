@@ -1,0 +1,49 @@
+{
+	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "node",
+		"target": "es2019",
+		"sourceMap": true,
+		"allowJs": true,
+		"lib": ["dom", "es2019"],
+		"jsx": "react",
+		"jsxFactory": "h",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"experimentalDecorators": true,
+		"downlevelIteration": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"importHelpers": true,
+		"baseUrl": "src",
+		"rootDirs": ["src"],
+		"paths": {
+			"@api": ["api/"],
+			"@components": ["components/"],
+			"@models": ["models/"],
+			"@screens": ["screens/"],
+			"@stores": ["stores/"],
+			"@themes": ["themes/"],
+			"@utilities": ["utilities/"],
+
+			"@api/*": ["api/*"],
+			"@components/*": ["components/*"],
+			"@models/*": ["models/*"],
+			"@screens/*": ["screens/*"],
+			"@stores/*": ["stores/*"],
+			"@themes/*": ["themes/*"],
+			"@utilities/*": ["utilities/*"],
+		}
+	},
+	// "exclude": ["node_modules"]
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.d.ts",
+		"node_modules/@types"
+	]
+}

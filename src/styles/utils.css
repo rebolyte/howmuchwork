@@ -1,0 +1,30 @@
+.dim {
+	opacity: 1;
+	transition: opacity 0.15s ease-in;
+
+	&:focus,
+	&:hover {
+		opacity: 0.5;
+		transition: opacity 0.15s ease-in;
+	}
+
+	&:active {
+		opacity: 0.8;
+		transition: opacity 0.15s ease-out;
+	}
+}
+
+.highlight {
+	animation: fade 2s forwards;
+	background-color: rgba(242, 245, 169, 1);
+}
+
+@keyframes fade {
+	from {
+		background-color: rgba(242, 245, 169, 1);
+	}
+
+	to {
+		background-color: rgba(242, 245, 169, 0);
+	}
+}

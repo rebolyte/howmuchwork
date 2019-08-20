@@ -1,0 +1,18 @@
+{
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"css.validate": false, // Disable style built-in lint
+	"postcss.validate": false, // Disable style built-in lint
+	"stylelint.enable": true, // Enable stylelint
+	"eslint.validate": [
+		{ "language": "typescript", "autoFix": true },
+		{ "language": "typescriptreact", "autoFix": true },
+		"javascript",
+		"javascriptreact"
+	],
+	"eslint.packageManager": "yarn",
+	"editor.rulers": [100],
+	"files.associations": {
+		"*.css": "postcss"
+	}
+}
