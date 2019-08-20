@@ -14,7 +14,6 @@ if (!Object.values(envs).includes(env)) {
 	process.exit(1);
 }
 
-// check for when we're running inside CodePipeline
 let isInRepo = false;
 try {
 	isInRepo =

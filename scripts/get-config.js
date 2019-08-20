@@ -9,11 +9,9 @@ const getParameters = env => {
 	switch (env) {
 		case envs.DEV:
 			return LOCAL_DEV_CONFIG;
-			break;
 		case envs.PROD:
 			// could call out to AWS Parameter Store or similar here
 			return PROD_CONFIG;
-			break;
 		default:
 			throw new Error('unknown env provided');
 	}

@@ -18,8 +18,8 @@
 	],
 	"settings": {
 		"react": {
-			"pragma": "React",
-			"version": "detect"
+			"pragma": "h",
+			"version": "latest"
 		}
 	},
 	"rules": {

@@ -1,5 +1,3 @@
-/** @jsx h */
-
 import { h, render } from 'preact';
 
 import Homepage from './screens/homepage/Homepage';

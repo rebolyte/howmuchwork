@@ -429,8 +429,8 @@ module.exports = {
 		borderColor: ['responsive', 'hover', 'focus'],
 		borderRadius: ['responsive'],
 		borderStyle: ['responsive'],
-		borderWidth: ['responsive', 'first-child', 'last-child'],
-		cursor: ['responsive'],
+		borderWidth: ['responsive', 'first', 'last'],
+		cursor: ['responsive', 'disabled'],
 		display: ['responsive'],
 		flexDirection: ['responsive'],
 		flexWrap: ['responsive'],
@@ -456,7 +456,7 @@ module.exports = {
 		negativeMargin: ['responsive'],
 		objectFit: ['responsive'],
 		objectPosition: ['responsive'],
-		opacity: ['responsive'],
+		opacity: ['responsive', 'disabled'],
 		outline: ['focus'],
 		overflow: ['responsive'],
 		padding: ['responsive'],
@@ -485,21 +485,5 @@ module.exports = {
 		zIndex: ['responsive']
 	},
 	corePlugins: {},
-	plugins: [
-		// https://github.com/tailwindcss/discuss/issues/214
-		function firstChild({ addVariant, e }) {
-			addVariant('first-child', ({ modifySelectors, separator }) => {
-				modifySelectors(({ className }) => {
-					return `.${e(`first-child${separator}${className}`)}:first-child`;
-				});
-			});
-		},
-		function lastChild({ addVariant, e }) {
-			addVariant('last-child', ({ modifySelectors, separator }) => {
-				modifySelectors(({ className }) => {
-					return `.${e(`last-child${separator}${className}`)}:last-child`;
-				});
-			});
-		}
-	]
+	plugins: []
 };
