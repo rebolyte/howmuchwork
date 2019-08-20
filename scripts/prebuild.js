@@ -23,16 +23,16 @@ try {
 } catch (err) {}
 
 // prettier-ignore
-if (isInRepo && (env === envs.PROD)) {
-	console.log(`Production build - ensuring git branch is ${branches.DEVELOP}`);
-	const currentBranch = execSync('git rev-parse --abbrev-ref HEAD')
-		.toString()
-		.trim();
-	if (currentBranch !== branches.DEVELOP) {
-		console.log(`The branch is not ${branches.DEVELOP}`);
-		process.exit(1);
-	}
-}
+// if (isInRepo && (env === envs.PROD)) {
+// 	console.log(`Production build - ensuring git branch is ${branches.DEVELOP}`);
+// 	const currentBranch = execSync('git rev-parse --abbrev-ref HEAD')
+// 		.toString()
+// 		.trim();
+// 	if (currentBranch !== branches.DEVELOP) {
+// 		console.log(`The branch is not ${branches.DEVELOP}`);
+// 		process.exit(1);
+// 	}
+// }
 
 // if (isInRepo && env !== envs.DEV) {
 // 	console.log('Ensuring git status is clean');

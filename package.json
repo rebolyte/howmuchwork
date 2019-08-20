@@ -4,13 +4,12 @@
 	"private": true,
 	"scripts": {
 		"predev": "node ./scripts/prebuild.js --env Development",
-		"dev": "webpack --mode development --env.NODE_ENV=development --env.APP_ENV=development --progress",
-		"watch": "webpack --mode development --env.NODE_ENV=development --env.APP_ENV=development --progress --watch",
+		"dev": "webpack --mode development --env.NODE_ENV=development --env.APP_ENV=development",
+		"watch": "webpack --mode development --env.NODE_ENV=development --env.APP_ENV=development --watch",
 		"prestart": "yarn predev",
 		"start": "webpack-dev-server --mode development --env.NODE_ENV=development --env.APP_ENV=development",
 		"prebuild": "node ./scripts/prebuild.js --env Production",
 		"build": "webpack --mode production --env.NODE_ENV=production --env.APP_ENV=production",
-		"test": "jest",
 		"fmt": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css}\" --loglevel warn",
 		"lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" && stylelint \"src/**/*.css\""
 	},

@@ -1,4 +1,4 @@
 // Production settings
 module.exports = {
-	BASE_URL: 'https://rebolyte.github.io/howmuchwork/'
+	BASE_URL: 'http://localhost:5000' // 'https://rebolyte.github.io/howmuchwork/'
 };

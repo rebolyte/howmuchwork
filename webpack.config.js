@@ -6,7 +6,7 @@ const TerserJSPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const clientEnv = require('./.env.json');
 
@@ -153,6 +153,7 @@ module.exports = env => {
 					whitelistPatterns: [/^btn-/, /^panel-stack-/]
 				})
 			),
+			ifDev(new webpack.ProgressPlugin()),
 			ifDev(new webpack.NamedModulesPlugin()),
 			ifProd(new webpack.HashedModuleIdsPlugin())
 		].filter(el => el),
