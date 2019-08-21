@@ -1,0 +1,80 @@
+.btn {
+	@apply my-1 rounded px-4 py-3 text-white font-semibold leading-tight shadow-md min-w-3xs;
+
+	&:hover {
+		transition: background-color 0.15s ease-out;
+	}
+
+	&:active {
+		opacity: 0.8;
+		transition: opacity 0.15s ease-out;
+	}
+
+	&:disabled {
+		@apply opacity-50 cursor-not-allowed;
+	}
+}
+
+.btn-white {
+	@apply bg-white text-gray-800;
+
+	&:hover:not(:disabled) {
+		@apply bg-gray-200;
+	}
+}
+
+.btn-teal {
+	@apply bg-teal-500;
+
+	&:hover:not(:disabled) {
+		@apply bg-teal-600;
+	}
+}
+
+.btn-blue {
+	@apply bg-blue-500;
+
+	&:hover:not(:disabled) {
+		@apply bg-blue-600;
+	}
+}
+
+.btn-gray {
+	@apply bg-gray-400 text-gray-800;
+
+	&:hover:not(:disabled) {
+		@apply bg-gray-500;
+	}
+}
+
+.btn-green {
+	@apply bg-green-500;
+
+	&:hover:not(:disabled) {
+		@apply bg-green-600;
+	}
+}
+
+.btn-orange {
+	@apply bg-orange-500;
+
+	&:hover:not(:disabled) {
+		@apply bg-orange-600;
+	}
+}
+
+.btn-yellow {
+	@apply bg-yellow-400 text-gray-800;
+
+	&:hover:not(:disabled) {
+		@apply bg-yellow-500;
+	}
+}
+
+.btn-red {
+	@apply bg-red-600;
+
+	&:hover:not(:disabled) {
+		@apply bg-red-700;
+	}
+}

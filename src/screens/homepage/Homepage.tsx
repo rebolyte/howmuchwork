@@ -1,7 +1,8 @@
 import { h } from 'preact';
+import { useState } from 'preact/hooks';
 import { isEmpty } from 'lodash-es';
 
-import { Calendar } from '@components';
+import { Card, Button, Calendar, TextInput, Select } from '@components';
 import { DocumentTitle, useOnMount, fillArray, sumVals } from '@utilities';
 
 const entries = [
@@ -39,8 +40,6 @@ const genExpensesInDays = (periodLength: number, amountMade: number, expenses: S
 	}, {});
 
 	console.log(expensesInDays);
-
-	// Take a map of values, and split those values across a given length
 
 	const days = fillArray(periodLength, {}).map((day: StringNum, _i) => {
 		while (sumVals(day) < 1) {
@@ -96,17 +95,76 @@ const genExpensesInDays = (periodLength: number, amountMade: number, expenses: S
 	});
 
 	console.log(days);
+
+	return days;
 };
 
 const Homepage = () => {
-	useOnMount(() => {
+	useOnMount(() => {});
+
+	const [month, setMonth] = useState(0);
+	const [year, setYear] = useState(2019);
+	const [income, setIncome] = useState(0);
+
+	const handleMonthChange = (val: string) => {
+		setMonth(parseInt(val, 10));
+	};
+
+	const handleYearChange = (val: string) => {
+		setYear(parseInt(val, 10));
+	};
+
+	const handleIncomeChange = (val: string) => {
+		setIncome(parseInt(val, 10));
+	};
+
+	const handleSubmit = (evt: Event) => {
+		evt.preventDefault();
 		genExpensesInDays(periodLength, amountMade, expenses);
-	});
+		console.log(month, year, income);
+	};
 
 	return (
 		<div>
 			<DocumentTitle title="Home" />
-			<div>Homepage</div>
+			<Card>
+				<form onSubmit={handleSubmit}>
+					<div className="mb-2">
+						<label className="form-label">Month</label>
+						<Select
+							options={[
+								{ value: '0', name: ' January' },
+								{ value: '1', name: ' February' },
+								{ value: '2', name: ' March' },
+								{ value: '3', name: ' April' },
+								{ value: '4', name: ' May' },
+								{ value: '5', name: ' June' },
+								{ value: '6', name: ' July' },
+								{ value: '7', name: ' August' },
+								{ value: '8', name: ' September' },
+								{ value: '9', name: ' October' },
+								{ value: '10', name: ' November' },
+								{ value: '11', name: ' December' }
+							]}
+							onChange={handleMonthChange}
+						/>
+					</div>
+					<div className="mb-2">
+						<label className="form-label">Year</label>
+						<TextInput type="number" placeholder="2019" value="2019" onChange={handleYearChange} />
+					</div>
+					<div className="mb-2">
+						<label className="form-label">Monthly Income</label>
+						<TextInput type="number" onChange={handleIncomeChange} />
+					</div>
+					<Button type="submit" color="green">
+						Visualize
+					</Button>
+					<Button color="gray" classes="ml-2">
+						Reset
+					</Button>
+				</form>
+			</Card>
 			<Calendar entries={entries} />
 		</div>
 	);
