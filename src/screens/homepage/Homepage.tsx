@@ -1,9 +1,11 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { isEmpty } from 'lodash-es';
+import { observer } from 'mobx-preact';
 
 import { Card, Button, Calendar, TextInput, Select } from '@components';
-import { DocumentTitle, useOnMount, fillArray, sumVals } from '@utilities';
+import { DocumentTitle, fillArray, sumVals } from '@utilities';
+import { useExpenseStore } from '@stores';
 
 import Expenses from './Expenses';
 
@@ -16,7 +18,7 @@ const entries = [
 
 const amountMade = 2000; // dollars
 const periodLength = 20; // days - M-F of one month
-const expenses = {
+const expenses_ = {
 	rent: 500,
 	gas: 75,
 	restaurants: 140,
@@ -101,8 +103,8 @@ const genExpensesInDays = (periodLength: number, amountMade: number, expenses: S
 	return days;
 };
 
-const Homepage = () => {
-	useOnMount(() => {});
+const Homepage = observer(() => {
+	const { expenses } = useExpenseStore();
 
 	const [month, setMonth] = useState(0);
 	const [year, setYear] = useState(2019);
@@ -122,8 +124,9 @@ const Homepage = () => {
 
 	const handleSubmit = (evt: Event) => {
 		evt.preventDefault();
-		genExpensesInDays(periodLength, amountMade, expenses);
+		genExpensesInDays(periodLength, amountMade, expenses_);
 		console.log(month, year, income);
+		console.log(expenses);
 	};
 
 	return (
@@ -180,6 +183,6 @@ const Homepage = () => {
 			<Calendar entries={entries} />
 		</div>
 	);
-};
+});
 
 export default Homepage;

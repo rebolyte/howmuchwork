@@ -1,17 +1,12 @@
 import { h } from 'preact';
 
 import { TextInput } from '@components';
-
-export interface ExpenseItemType {
-	id: string;
-	name: string;
-	amount: number;
-}
+import { ExpenseEntity } from '@stores';
 
 export interface ExpenseItemProps {
-	item: ExpenseItemType;
-	onChange: (item: ExpenseItemType) => any;
-	deleteItem: (item: ExpenseItemType) => any;
+	item: ExpenseEntity;
+	onChange: (item: ExpenseEntity) => any;
+	deleteItem: (item: ExpenseEntity) => any;
 	key?: string;
 }
 
