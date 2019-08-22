@@ -3,3 +3,7 @@ export interface ExpenseItem {
 	name: string;
 	amount: number;
 }
+
+export interface ExpensesForDay {
+	[name: string]: number;
+}

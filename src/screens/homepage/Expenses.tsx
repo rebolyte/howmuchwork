@@ -10,7 +10,9 @@ export interface ExpensesProps {
 	classes?: string;
 }
 
-const Expenses = observer(({ classes }: ExpensesProps) => {
+export type ExpensesType = (props: ExpensesProps) => h.JSX.Element;
+
+const Expenses: ExpensesType = observer(({ classes }: ExpensesProps) => {
 	const { expenses, createExpense, updateExpense, removeExpense } = useExpenseStore();
 
 	return (

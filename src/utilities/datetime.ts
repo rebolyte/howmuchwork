@@ -23,3 +23,6 @@ export const weeksInMonth = (date: Date) => {
 
 	return eachWeekOfInterval({ start, end });
 };
+
+export const monthStartsOnWeekday = (year: number, month: number) =>
+	new Date(year, month, 1).getDay();

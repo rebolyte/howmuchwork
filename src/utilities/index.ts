@@ -1,5 +1,11 @@
 export { fillArray } from './array';
-export { formatDatetime, isWeekday, weekdaysInMonth, weeksInMonth } from './datetime';
+export {
+	formatDatetime,
+	isWeekday,
+	weekdaysInMonth,
+	weeksInMonth,
+	monthStartsOnWeekday
+} from './datetime';
 export { DocumentTitle } from './DocumentTitle';
 export { StoreProvider } from './StoreProvider';
 export { sumVals } from './object';

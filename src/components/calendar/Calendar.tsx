@@ -1,34 +1,33 @@
 import { h } from 'preact';
-// import { getDaysInMonth, eachWeekOfInterval } from 'date-fns/esm';
+import { observer } from 'mobx-preact';
+import { getDaysInMonth } from 'date-fns/esm';
+import { chunk } from 'lodash-es';
 
-import { weeksInMonth } from '@utilities';
-
-export interface Item {
-	name: string;
-	percent: number;
-}
-
-export interface Entry {
-	date: Date;
-	items: Item[];
-}
+import { monthStartsOnWeekday } from '@utilities';
 
 export interface CalendarProps {
-	entries: Entry[];
+	month: number;
+	year: number;
+	renderDay: (day: number) => h.JSX.Element;
 }
 
-/*
-entries: [
-	{
-		date: new Date(),
-		items: [
-			{ name: 'rent', percent: 0.75 }
-		]
-	}
-]
-*/
+export type CalendarType = (props: CalendarProps) => h.JSX.Element;
 
-const Calendar = ({ entries }: CalendarProps) => {
+const Calendar: CalendarType = observer(({ year, month, renderDay }: CalendarProps) => {
+	const numDays = getDaysInMonth(new Date(year, month, 1));
+	const weekday = monthStartsOnWeekday(year, month);
+
+	const blanks = [...Array(weekday)].map((_, idx) => <td key={'blank' + idx}></td>);
+
+	const cells = [...Array(numDays)].map((_, idx) => (
+		<td key={'cell' + idx}>
+			{idx + 1}
+			{renderDay(idx + 1)}
+		</td>
+	));
+
+	const rows = chunk([...blanks, ...cells], 7);
+
 	return (
 		<table>
 			<thead>
@@ -43,14 +42,12 @@ const Calendar = ({ entries }: CalendarProps) => {
 				</tr>
 			</thead>
 			<tbody>
-				{weeksInMonth(entries[0].date).map(d => (
-					<tr key={d.toISOString()}>
-						<td>week</td>
-					</tr>
+				{rows.map((row, idx) => (
+					<tr key={idx}>{row}</tr>
 				))}
 			</tbody>
 		</table>
 	);
-};
+});
 
 export default Calendar;

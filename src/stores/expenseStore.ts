@@ -1,9 +1,10 @@
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
 import { observable, computed, action } from 'mobx';
+import { isEmpty } from 'lodash-es';
 
 import { ExpenseItem } from '@models';
-import { uniqueIdRandom } from '@utilities';
+import { uniqueIdRandom, fillArray, sumVals } from '@utilities';
 
 export class ExpenseEntity {
 	@observable readonly id: string;
@@ -20,6 +21,25 @@ export class ExpenseEntity {
 		}
 	}
 }
+
+interface StringNum {
+	[key: string]: number;
+}
+
+// const amountMade = 2000; // dollars
+// const periodLength = 20; // days - M-F of one month
+// const expenses_ = {
+// 	rent: 500,
+// 	gas: 75,
+// 	restaurants: 140,
+// 	gifts: 35,
+// 	travel: 130,
+// 	electric: 150,
+// 	xbox: 325,
+// 	muffins: 10,
+// 	donuts: 12,
+// 	other: 123
+// };
 
 export class ExpenseStore {
 	expenseRegistry = observable.map<string, ExpenseEntity>();
@@ -61,6 +81,72 @@ export class ExpenseStore {
 	@action
 	removeExpense = ({ id }: ExpenseEntity) => {
 		this.expenseRegistry.delete(id);
+	};
+
+	expensesInDays = (periodLength: number, amountMade: number) => {
+		const inDays: StringNum = this.expenses.reduce((acc: StringNum, { name, amount }) => {
+			const percentOfTotal = amount / amountMade;
+			const percentOfDays = periodLength * percentOfTotal;
+			acc[name] = percentOfDays;
+			return acc;
+		}, {});
+
+		console.log(inDays);
+
+		const days = fillArray(periodLength, {}).map((day: StringNum, _i) => {
+			while (sumVals(day) < 1) {
+				if (isEmpty(inDays)) {
+					break;
+				}
+
+				const [[curKey, curVal], [nextKey = 'default', nextVal = 0] = []] = Object.entries(inDays);
+
+				// If expense covers one day, fill it and remove expense
+				if (curVal === 1) {
+					day[curKey] = 1;
+					delete inDays[curKey];
+				}
+
+				// If expense spans multiple days, just fill the day and decrement expense value
+				if (curVal > 1) {
+					day[curKey] = 1;
+					inDays[curKey]--;
+				}
+
+				// If expense covers less than a day...
+				if (curVal < 1) {
+					const sum = sumVals(day);
+
+					// ...and adding it the day would spill over...
+					if (sum + curVal >= 1) {
+						// subtract what will fit in the day and add it
+						const diff = 1 - sum;
+						day[curKey] = diff;
+						inDays[curKey] = curVal - diff;
+					}
+					// ...and the next value won't fit...
+					else if (sum + nextVal >= 1) {
+						// add the current expense, as well as what will fit of next expense so we fill the day
+						day[curKey] = curVal;
+						const diff = 1 - sumVals(day);
+						day[nextKey] = diff;
+						inDays[nextKey] = nextVal - diff;
+						delete inDays[curKey];
+					}
+					// Otherwise we know it fits, so put it in the day
+					else {
+						day[curKey] = curVal;
+						delete inDays[curKey];
+					}
+				}
+			}
+
+			return day;
+		});
+
+		console.log(days);
+
+		return days;
 	};
 }
 

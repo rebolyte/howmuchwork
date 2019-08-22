@@ -27,7 +27,7 @@ const ExpenseItem = ({ item, onChange, deleteItem, key }: ExpenseItemProps) => {
 				onChange={val => onChange({ ...item, amount: parseInt(val) })}
 				classes="mr-2"
 			/>
-			<span class="icon-close cursor-pointer" onClick={() => deleteItem(item)}></span>
+			<span class="icon-close cursor-pointer dim" onClick={() => deleteItem(item)}></span>
 		</div>
 	);
 };

@@ -1,114 +1,23 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { isEmpty } from 'lodash-es';
 import { observer } from 'mobx-preact';
 
-import { Card, Button, Calendar, TextInput, Select } from '@components';
-import { DocumentTitle, fillArray, sumVals } from '@utilities';
+import { Card, Button, TextInput, Select, Calendar } from '@components';
+import { DocumentTitle, weekdaysInMonth } from '@utilities';
 import { useExpenseStore } from '@stores';
 
 import Expenses from './Expenses';
 
-const entries = [
-	{
-		date: new Date(),
-		items: [{ name: 'rent', percent: 0.75 }]
-	}
-];
+// Have to be explicit because mobx-preact doesn't have typings, so using `observer` makes it `any`
+export type HomepageType = () => h.JSX.Element;
 
-const amountMade = 2000; // dollars
-const periodLength = 20; // days - M-F of one month
-const expenses_ = {
-	rent: 500,
-	gas: 75,
-	restaurants: 140,
-	gifts: 35,
-	travel: 130,
-	electric: 150,
-	xbox: 325,
-	muffins: 10,
-	donuts: 12,
-	other: 123
-};
-
-interface StringNum {
-	[key: string]: number;
-}
-
-const genExpensesInDays = (periodLength: number, amountMade: number, expenses: StringNum) => {
-	const expensesInDays: StringNum = Object.entries(expenses).reduce((acc: StringNum, [k, v]) => {
-		const percentOfTotal = v / amountMade;
-		const percentOfDays = periodLength * percentOfTotal;
-		acc[k] = percentOfDays;
-		return acc;
-	}, {});
-
-	console.log(expensesInDays);
-
-	const days = fillArray(periodLength, {}).map((day: StringNum, _i) => {
-		while (sumVals(day) < 1) {
-			if (isEmpty(expensesInDays)) {
-				break;
-			}
-
-			const [[curKey, curVal], [nextKey = 'default', nextVal = 0] = []] = Object.entries(
-				expensesInDays
-			);
-
-			// If expense covers one day, fill it and remove expense
-			if (curVal === 1) {
-				day[curKey] = 1;
-				delete expensesInDays[curKey];
-			}
-
-			// If expense spans multiple days, just fill the day and decrement expense value
-			if (curVal > 1) {
-				day[curKey] = 1;
-				expensesInDays[curKey]--;
-			}
-
-			// If expense covers less than a day...
-			if (curVal < 1) {
-				const sum = sumVals(day);
-
-				// ...and adding it the day would spill over...
-				if (sum + curVal >= 1) {
-					// subtract what will fit in the day and add it
-					const diff = 1 - sum;
-					day[curKey] = diff;
-					expensesInDays[curKey] = curVal - diff;
-				}
-				// ...and the next value won't fit...
-				else if (sum + nextVal >= 1) {
-					// add the current expense, as well as what will fit of next expense so we fill the day
-					day[curKey] = curVal;
-					const diff = 1 - sumVals(day);
-					day[nextKey] = diff;
-					expensesInDays[nextKey] = nextVal - diff;
-					delete expensesInDays[curKey];
-				}
-				// Otherwise we know it fits, so put it in the day
-				else {
-					day[curKey] = curVal;
-					delete expensesInDays[curKey];
-				}
-			}
-		}
-
-		return day;
-	});
-
-	console.log(days);
-
-	return days;
-};
-
-const Homepage = observer(() => {
-	const { expenses } = useExpenseStore();
+const Homepage: HomepageType = observer(() => {
+	const { expenses, expensesInDays } = useExpenseStore();
 
 	const [month, setMonth] = useState(0);
 	const [year, setYear] = useState(2019);
 	const [income, setIncome] = useState(0);
+	const [entries, setEntries] = useState<{ [name: string]: number }[]>([]);
 
 	const handleMonthChange = (val: string) => {
 		setMonth(parseInt(val));
@@ -124,9 +33,31 @@ const Homepage = observer(() => {
 
 	const handleSubmit = (evt: Event) => {
 		evt.preventDefault();
-		genExpensesInDays(periodLength, amountMade, expenses_);
-		console.log(month, year, income);
-		console.log(expenses);
+		const numWeekdays = weekdaysInMonth(new Date(year, month, 1)).length;
+		if (expenses.length > 0) {
+			const inDays = expensesInDays(numWeekdays, income);
+			setEntries(inDays);
+		}
+	};
+
+	const renderDay = (day: number) => {
+		const exp = entries[day - 1];
+		// var propDataName = prop.replace(/\s+/g, '-').toLowerCase();
+		// var sizeStyle = expensesPerDayObj[dayObj][prop] < 0.2 ? ' font-size: 8pt;' : '';
+
+		if (exp) {
+			return (
+				<div>
+					{Object.entries(exp).map(([k, v]) => (
+						/* stylelint-disable-next-line declaration-block-trailing-semicolon */
+						<span key={k} style={{ height: v * 100 + '%;' }}>
+							{k}
+						</span>
+					))}
+				</div>
+			);
+		}
+		return <div></div>;
 	};
 
 	return (
@@ -180,7 +111,7 @@ const Homepage = observer(() => {
 					</div>
 				</form>
 			</Card>
-			<Calendar entries={entries} />
+			<Calendar year={year} month={month} renderDay={renderDay} />
 		</div>
 	);
 });
