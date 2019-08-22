@@ -44,7 +44,7 @@ const TextInput = ({
 			type={type}
 			value={value}
 			placeholder={placeholder}
-			onChange={handleChange}
+			onInput={handleChange}
 			disabled={disabled}
 			className={inputClasses}
 			{...restProps}

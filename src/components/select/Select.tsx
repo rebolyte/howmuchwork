@@ -72,7 +72,7 @@ const DLSelect: SelectOverload = (props: SelectProps | SelectRawProps) => {
 		<div className={containerClasses}>
 			<select
 				value={value}
-				onChange={handleChange}
+				onInput={handleChange}
 				disabled={disabled}
 				className="select-input"
 				{...restProps}
