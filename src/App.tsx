@@ -31,7 +31,16 @@ const App = () => (
 							About
 						</Link>
 					</div>
-					<div class="flex items-center text-blue-200">stuff</div>
+					<div class="flex items-center text-blue-200">
+						<a
+							href="https://github.com/rebolyte/howmuchwork"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-blue-200 hover:text-white"
+						>
+							Source
+						</a>
+					</div>
 				</div>
 			</nav>
 			<div class="container mx-auto flex-1 px-2 md:px-8 mt-4">
