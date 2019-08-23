@@ -1,4 +1,5 @@
 export { fillArray } from './array';
+export { ColorFountain } from './colors';
 export {
 	formatDatetime,
 	isWeekday,

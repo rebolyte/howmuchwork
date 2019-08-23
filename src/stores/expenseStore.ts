@@ -59,6 +59,7 @@ export class ExpenseStore {
 	@action
 	reset = () => {
 		this.expenseRegistry.clear();
+		this.createExpense();
 	};
 
 	expenseById = (id: string) => this.expenseRegistry.get(id);
@@ -90,8 +91,6 @@ export class ExpenseStore {
 			acc[name] = percentOfDays;
 			return acc;
 		}, {});
-
-		console.log(inDays);
 
 		const days = fillArray(periodLength, {}).map((day: StringNum, _i) => {
 			while (sumVals(day) < 1) {
@@ -143,8 +142,6 @@ export class ExpenseStore {
 
 			return day;
 		});
-
-		console.log(days);
 
 		return days;
 	};

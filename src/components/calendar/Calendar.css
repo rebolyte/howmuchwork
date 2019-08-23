@@ -1,0 +1,7 @@
+.cell {
+	@apply w-32 h-32 align-top border border-gray-500;
+}
+
+.date {
+	@apply float-right text-gray-600;
+}

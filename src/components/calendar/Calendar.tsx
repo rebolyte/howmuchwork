@@ -5,6 +5,8 @@ import { chunk } from 'lodash-es';
 
 import { monthStartsOnWeekday } from '@utilities';
 
+import './Calendar.css';
+
 export interface CalendarProps {
 	month: number;
 	year: number;
@@ -17,11 +19,11 @@ const Calendar: CalendarType = observer(({ year, month, renderDay }: CalendarPro
 	const numDays = getDaysInMonth(new Date(year, month, 1));
 	const weekday = monthStartsOnWeekday(year, month);
 
-	const blanks = [...Array(weekday)].map((_, idx) => <td key={'blank' + idx}></td>);
+	const blanks = [...Array(weekday)].map((_, idx) => <td key={'blank' + idx} class="cell"></td>);
 
 	const cells = [...Array(numDays)].map((_, idx) => (
-		<td key={'cell' + idx}>
-			{idx + 1}
+		<td key={'cell' + idx} class="cell">
+			<span class="date">{idx + 1}</span>
 			{renderDay(idx + 1)}
 		</td>
 	));
@@ -29,7 +31,7 @@ const Calendar: CalendarType = observer(({ year, month, renderDay }: CalendarPro
 	const rows = chunk([...blanks, ...cells], 7);
 
 	return (
-		<table>
+		<table class="calendar border-collapse mx-auto" style={{ borderSpacing: 0 }}>
 			<thead>
 				<tr>
 					<th>Sun</th>
