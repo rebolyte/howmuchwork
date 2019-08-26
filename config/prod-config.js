@@ -1,4 +1,4 @@
 // Production settings
 module.exports = {
-	BASE_URL: 'https://howmuchwork.netlify.com/' // 'https://howmuch.work/'
+	BASE_URL: 'https://howmuch.work/' // 'https://howmuchwork.netlify.com/'
 };
