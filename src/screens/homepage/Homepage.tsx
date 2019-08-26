@@ -53,7 +53,7 @@ const Homepage: HomepageType = observer(() => {
 			const colors = randomColor({
 				hue: 'green',
 				luminosity: 'dark',
-				count: Object.keys(expenses).length
+				count: expenses.length
 			});
 
 			expenses.forEach((exp, idx) => {
